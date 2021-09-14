@@ -166,10 +166,10 @@ module.exports = (opts) => {
 	/*
 	 * test tasks
 	 */
-	exports.test             = series(lintTest, build,                function test() {     return runTests({ root: nodeModulePaths, projectDir }); });
-	exports['test-only']     = series(lintTest,                       function test() {     return runTests({ root: nodeModulePaths, projectDir }); });
-	exports.coverage         = series(cleanCoverage, lintTest, build, function coverage() { return runTests({ root: nodeModulePaths, projectDir, cover: true }); });
-	exports['coverage-only'] = series(cleanCoverage, lintTest,        function coverage() { return runTests({ root: nodeModulePaths, projectDir, cover: true }); });
+	exports.test             = series(lintTest, build,                function test() {     return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir }); });
+	exports['test-only']     = series(lintTest,                       function test() {     return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir }); });
+	exports.coverage         = series(cleanCoverage, lintTest, build, function coverage() { return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true }); });
+	exports['coverage-only'] = series(cleanCoverage, lintTest,        function coverage() { return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true }); });
 
 	/*
 	 * watch tasks

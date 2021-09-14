@@ -1,3 +1,7 @@
+# 4.0.3 (Sep 14, 2021)
+
+ * fix: Fixed typo.
+
 # 4.0.2 (Sep 14, 2021)
 
  * chore: Removed unused `babel-loader` dependency.
