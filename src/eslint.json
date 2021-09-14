@@ -1,0 +1,9 @@
+{
+	"extends": [ "axway/env-node", "axway/+babel" ],
+	"globals": {},
+	"rules": {
+		"node/no-unsupported-features/es-syntax": "off",
+		"node/no-unsupported-features/node-builtins": [ "warn", { "version": ">=10.0.0" } ],
+		"require-atomic-updates": "off"
+	}
+}

@@ -1,0 +1,11 @@
+._*
+.DS_Store
+.git*
+.nyc_output
+.travis.yml
+junit.xml
+node_modules
+npm-debug.log
+retire_output.json
+yarn-error.log
+yarn.lock
