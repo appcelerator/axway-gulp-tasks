@@ -1,3 +1,7 @@
+# 4.0.2 (Sep 14, 2021)
+
+ * chore: Removed unused `babel-loader` dependency.
+
 # 4.0.1 (Sep 14, 2021)
 
  * chore: Updated dependencies.
