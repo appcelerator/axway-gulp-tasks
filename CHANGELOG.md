@@ -1,3 +1,11 @@
+# v4.1.1 (Feb 10, 2022)
+
+ * fix: Fixed botched 4.1.0 release which was missing all changes from 4.0.2 and 4.0.3.
+
+# v4.1.0 (Feb 10, 2022)
+
+ * chore: Updated dependencies.
+
 # 4.0.3 (Sep 14, 2021)
 
  * fix: Fixed typo.
@@ -6,18 +14,18 @@
 
  * chore: Removed unused `babel-loader` dependency.
 
-# 4.0.1 (Sep 14, 2021)
+# v4.0.1 (Sep 14, 2021)
 
  * chore: Updated dependencies.
  * chore: Remove unused `package` template.
 
-# 4.0.0 (Sep 14, 2021)
+# v4.0.0 (Sep 14, 2021)
 
  * BREAKING CHANGE: Requires Node.js 12.13.0 or newer.
  * BREAKING CHANGE: Removed Babel configurations for Node 10 and older.
  * refactor: Copied `appcd-gulp` package from `appc-daemon` repo.
 
-# 3.2.0 (May 6, 2021)
+# v3.2.0 (May 6, 2021)
 
  * feat(test): Exposed Mocha `slow` and `timeout` parameters in test runner.
  * fix(coverage): Simplified coverage file resolution by letting Node's module system find the
