@@ -1,3 +1,7 @@
+# v4.1.2 (Feb 15, 2022)
+
+ * fix: Downgrade `eslint-plugin-mocha` from 10.x to 9.x due to accidental bump.
+
 # v4.1.1 (Feb 10, 2022)
 
  * fix: Fixed botched 4.1.0 release which was missing all changes from 4.0.2 and 4.0.3.
