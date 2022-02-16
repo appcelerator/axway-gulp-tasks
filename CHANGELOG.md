@@ -1,3 +1,7 @@
+# v4.1.4 (Feb 15, 2022)
+
+ * fix: Downgrade `eslint-config-axway` from 7.x to 6.x due to accidental bump.
+
 # v4.1.3 (Feb 15, 2022)
 
  * fix: Downgrade `eslint` from 8.x to 7.x due to accidental bump.
