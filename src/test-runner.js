@@ -15,7 +15,11 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 	// add nyc
 	if (cover) {
 		const c8ModuleBinDir = resolveModuleBin(root, 'c8');
-		args.push(path.join(c8ModuleBinDir, 'c8'));
+		if (isWindows) {
+            execPath = path.join(c8ModuleBinDir, 'c8.cmd');
+        } else {
+            args.push(path.join(c8ModuleBinDir, 'c8'));
+        }
 
 		args.push(
 			'--exclude', 'test',
