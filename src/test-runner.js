@@ -2,7 +2,7 @@ const ansiColors    = require('ansi-colors');
 const fs            = require('fs-extra');
 const log           = require('fancy-log');
 const path          = require('path');
-const { spawnSync } = require('child_process');
+const { execSync } = require('child_process');
 
 const isWindows   = process.platform === 'win32';
 
@@ -14,19 +14,12 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 
 	// add nyc
 	if (cover) {
-		const nycModuleBinDir = resolveModuleBin(root, 'nyc');
-		if (isWindows) {
-			execPath = path.join(nycModuleBinDir, 'nyc.cmd');
-		} else {
-			args.push(path.join(nycModuleBinDir, 'nyc'));
-		}
+		const c8ModuleBinDir = resolveModuleBin(root, 'c8');
+		args.push(path.join(c8ModuleBinDir, 'c8'));
 
 		args.push(
-			'--cache', 'true',
 			'--exclude', 'test',
 			'--exclude', 'packages/*/test/**/*.js', // exclude tests
-			'--instrument', 'true',
-			'--source-map', 'true',
 			// supported reporters:
 			//   https://github.com/istanbuljs/istanbuljs/tree/master/packages/istanbul-reports/lib
 			'--reporter=html',
@@ -35,8 +28,7 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 			'--reporter=text',
 			'--reporter=text-summary',
 			'--reporter=cobertura',
-			'--require', path.join(__dirname, 'test-transpile.js'),
-			'--show-process-tree',
+			'--clean', 'false',
 			process.execPath // need to specify node here so that spawn-wrap works
 		);
 
@@ -99,11 +91,13 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 		}
 	}
 
-	log(`Running: ${ansiColors.cyan(`${execPath} ${args.join(' ')}`)}`);
+	const cmd = `${execPath} ${args.join(' ')}`;
+	log(`Running: ${ansiColors.cyan(cmd)}`);
 
 	// run!
 	try {
-		if (spawnSync(execPath, args, { stdio: 'inherit' }).status) {
+		const result = execSync(cmd, { stdio: 'inherit'});
+		if (result) {
 			const err = new Error('At least one test failed :(');
 			err.showStack = false;
 			throw err;
