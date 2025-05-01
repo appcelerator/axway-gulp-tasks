@@ -1,3 +1,7 @@
+# v5.0.0 (May 1, 2025)
+
+- BREAKING CHANGE: Requires Node.js 18.19.0 or newer.
+
 # v4.2.0 (May 1, 2025)
 
 - fix: Replace 'nyc' with 'c8' as part of upgrading node.js on Axway CLI and ESM conversion.

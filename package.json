@@ -50,6 +50,6 @@
   "bugs": "https://github.com/appcelerator/axway-gulp-tasks/issues",
   "repository": "https://github.com/appcelerator/axway-gulp-tasks",
   "engines": {
-    "node": ">=12.13.0"
+    "node": ">=18.19.0"
   }
 }
