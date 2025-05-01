@@ -1,3 +1,7 @@
+# v5.0.1 (May 1, 2025)
+
+- fix: fixed package.json
+
 # v5.0.0 (May 1, 2025)
 
 - BREAKING CHANGE: Requires Node.js 18.19.0 or newer.
