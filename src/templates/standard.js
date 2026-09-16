@@ -14,6 +14,7 @@ module.exports = (opts) => {
 	const babelConf    = require('../babel')(opts);
 	const fs           = require('fs-extra');
 	const gulp         = require('gulp');
+	const gulpESLint   = require('gulp-eslint-new');
 	const Module       = require('module');
 	const path         = require('path');
 	const { runTests } = require('../test-runner');
@@ -59,50 +60,31 @@ module.exports = (opts) => {
 	/*
 	 * lint tasks
 	 */
-	function lint(pattern, eslintFile = 'eslint.json') {
+	function lint(pattern, eslintFile = 'eslint.config.js') {
 		if (!patchedNodeModulePaths) {
 			const orig = Module._nodeModulePaths;
 			Module._nodeModulePaths = from => Array.from(new Set([ ...orig(from), ...nodeModulePaths ]));
 			patchedNodeModulePaths = true;
 		}
 
-		const baseConfig = require(path.resolve(__dirname, '..', eslintFile));
+		const overrideConfig = [ ...require(path.resolve(__dirname, '..', eslintFile)) ];
 
-		if (!baseConfig.parserOptions) {
-			baseConfig.parserOptions = {};
-		}
-		if (!baseConfig.parserOptions.babelOptions) {
-			baseConfig.parserOptions.babelOptions = {};
-		}
-		baseConfig.parserOptions.babelOptions.plugins = babelConf.plugins;
-		baseConfig.parserOptions.babelOptions.presets = babelConf.presets;
-
-		// check if the user has a custom .eslintrc in the root of the project
-		let custom = path.join(opts.projectDir, '.eslintrc');
+		// check if the user has a custom eslint.config.js in the root of the project
+		const custom = path.join(opts.projectDir, 'eslint.config.js');
 		if (fs.existsSync(custom)) {
-			(function merge(dest, src) {
-				for (const key of Object.keys(src)) {
-					if (src[key] && typeof src[key] === 'object' && !Array.isArray(src[key])) {
-						if (!dest[key] || typeof dest[key] !== 'object' || Array.isArray(dest[key])) {
-							dest[key] = {};
-						}
-						merge(dest[key], src[key]);
-					} else {
-						dest[key] = src[key];
-					}
-				}
-			}(baseConfig, JSON.parse(fs.readFileSync(custom))));
+			const customConfig = require(custom);
+			overrideConfig.push(...(Array.isArray(customConfig) ? customConfig : [ customConfig ]));
 		}
 
 		return gulp.src(pattern)
 			.pipe($.plumber())
 			.pipe($.debug({ title: 'lint' }))
-			.pipe($.eslint({ baseConfig }))
-			.pipe($.eslint.format())
-			.pipe($.eslint.failAfterError());
+			.pipe(gulpESLint({ configType: 'flat', overrideConfigFile: true, overrideConfig }))
+			.pipe(gulpESLint.format())
+			.pipe(gulpESLint.failAfterError());
 	}
 	function lintSrc() { return lint('src/**/*.js'); }
-	function lintTest() { return lint('test/**/test-*.js', 'eslint-tests.json'); }
+	function lintTest() { return lint('test/**/test-*.js', 'eslint-tests.config.js'); }
 	exports['lint-src'] = lintSrc;
 	exports['lint-test'] = lintTest;
 	exports.lint = series(
