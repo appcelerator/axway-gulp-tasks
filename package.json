@@ -11,9 +11,6 @@
     "Chris Barber <cbarber@axway.com>"
   ],
   "license": "Apache-2.0",
-  "resolutions": {
-    "eslint": "^9.39.2"
-  },
   "dependencies": {
     "@babel/core": "^7.29.7",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
@@ -38,7 +35,7 @@
     "gulp": "^5.0.1",
     "gulp-babel": "^8.0.0",
     "gulp-debug": "^4.0.0",
-    "gulp-eslint-new": "^2.6.2",
+    "gulp-eslint-new": "~2.5.0",
     "gulp-load-plugins": "^2.0.8",
     "gulp-plumber": "^1.2.1",
     "gulp-sourcemaps": "^3.0.0",
