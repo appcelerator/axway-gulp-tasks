@@ -58,13 +58,14 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 		args.push('--slow', slow);
 	}
 
-	const jenkinsReporter = resolveModule(root, 'mocha-jenkins-reporter');
-	if (jenkinsReporter) {
-		args.push(`--reporter=${jenkinsReporter}`);
+	const junitReporter = resolveModule(root, 'mocha-junit-reporter');
+	if (junitReporter) {
+		args.push(`--reporter=${junitReporter}`);
+		args.push('--reporter-options', `testsuitesTitle=${path.basename(projectDir)},jenkinsClassnamePrefix=${path.basename(projectDir)}`);
 	}
 
-	process.env.JUNIT_REPORT_PATH = path.join(projectDir, 'junit.xml');
-	process.env.JUNIT_REPORT_NAME = path.basename(projectDir);
+	process.env.MOCHA_FILE = path.join(projectDir, 'junit.xml');
+	process.env.JENKINS_MODE = 'true';
 
 	// add grep
 	let p = process.argv.indexOf('--grep');
