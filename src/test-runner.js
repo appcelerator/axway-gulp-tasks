@@ -58,8 +58,9 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 		args.push('--slow', slow);
 	}
 
-	// use mocha's built-in xunit reporter for JUnit-style output; it is better to use this as it ships with mocha itself
-	args.push('--reporter', 'xunit');
+	// run mocha's built-in `spec` and `xunit` reporters together for live console output plus a
+	// JUnit-style XML file; both ship with mocha itself
+	args.push('--reporter', path.join(__dirname, 'mocha-multi-reporter.js'));
 	args.push('--reporter-options', `output=${path.join(projectDir, 'junit.xml')},suiteName=${path.basename(projectDir)}`);
 
 	// add grep
