@@ -58,14 +58,9 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 		args.push('--slow', slow);
 	}
 
-	const junitReporter = resolveModule(root, 'mocha-junit-reporter');
-	if (junitReporter) {
-		args.push(`--reporter=${junitReporter}`);
-		args.push('--reporter-options', `testsuitesTitle=${path.basename(projectDir)},jenkinsClassnamePrefix=${path.basename(projectDir)}`);
-	}
-
-	process.env.MOCHA_FILE = path.join(projectDir, 'junit.xml');
-	process.env.JENKINS_MODE = 'true';
+	// use mocha's built-in xunit reporter for JUnit-style output; it is better to use this as it ships with mocha itself
+	args.push('--reporter', 'xunit');
+	args.push('--reporter-options', `output=${path.join(projectDir, 'junit.xml')},suiteName=${path.basename(projectDir)}`);
 
 	// add grep
 	let p = process.argv.indexOf('--grep');
