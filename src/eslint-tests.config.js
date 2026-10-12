@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = [
-	...require('eslint-config-axway/env-node'),
-	...require('eslint-config-axway/+chai'),
-	...require('eslint-config-axway/+mocha'),
+	...require('eslint-config-axway/env-node').default,
+	...require('eslint-config-axway/+chai').default,
+	...require('eslint-config-axway/+mocha').default,
 	{
 		languageOptions: {
 			globals: {

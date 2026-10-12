@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = [
-	...require('eslint-config-axway/env-node'),
+	...require('eslint-config-axway/env-node').default,
 	{
 		rules: {
 			'n/no-unsupported-features/es-syntax': 'off',
