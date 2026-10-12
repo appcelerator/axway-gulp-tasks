@@ -12,6 +12,7 @@ module.exports = (opts) => {
 
 	const $            = require('gulp-load-plugins')();
 	const babelConf    = require('../babel')(opts);
+	const { execSync } = require('child_process');
 	const fs           = require('fs-extra');
 	const gulp         = require('gulp');
 	const gulpESLint   = require('gulp-eslint-new');
@@ -117,32 +118,15 @@ module.exports = (opts) => {
 	exports.default = build;
 
 	exports.docs = series(cleanDocs, lintSrc, async () => {
-		const esdoc = require('esdoc').default;
+		const jsdocBin = require.resolve('jsdoc/jsdoc.js');
+		const args = [ jsdocBin, '-d', docsDir, '-r', 'src' ];
 
-		esdoc.generate({
-			// debug: true,
-			destination: docsDir,
-			plugins: [
-				{
-					name: 'esdoc-standard-plugin',
-					option: {
-						brand: {
-							title:       opts.pkgJson.name,
-							description: opts.pkgJson.description,
-							respository: 'https://github.com/appcelerator/axway-gulp-tasks',
-							site:        'https://github.com/appcelerator/axway-gulp-tasks'
-						}
-					}
-				},
-				{
-					name: 'esdoc-ecmascript-proposal-plugin',
-					option: {
-						all: true
-					}
-				}
-			],
-			source: './src'
-		});
+		const readme = path.join(projectDir, 'README.md');
+		if (fs.existsSync(readme)) {
+			args.push('-R', readme);
+		}
+
+		execSync(`${process.execPath} ${args.join(' ')}`, { cwd: projectDir, stdio: 'inherit' });
 	});
 
 	/*
