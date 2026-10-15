@@ -1,4 +1,3 @@
-const fs = require('fs-extra');
 const Module = require('module');
 const path = require('path');
 
@@ -12,7 +11,7 @@ Object.keys(conf).forEach(function (key) {
 	if ((key === 'plugins' || key === 'presets') && Array.isArray(conf[key])) {
 		for (var i = 0; i < conf[key].length; i++) {
 			const isArr = Array.isArray(conf[key][i]);
-	 		let name = isArr ? conf[key][i][0] : conf[key][i];
+			let name = isArr ? conf[key][i][0] : conf[key][i];
 			if (minifyRE.test(name)) {
 				conf[key].splice(i--, 1);
 			} else {
@@ -42,7 +41,8 @@ if (process.env.AXWAY_COVERAGE) {
 		path.resolve(process.env.AXWAY_COVERAGE, 'test')
 	];
 	if (process.env.AXWAY_TEST_GLOBAL_PACKAGE_DIR) {
-		conf.only.push(new RegExp(`^${process.env.AXWAY_COVERAGE.replace(/[\/\\]/g, '[/\\\\]')}[/\\\\](packages|plugins)[/\\\\].+[/\\\\](src|test)[/\\\\]`));
+		// eslint-disable-next-line security/detect-non-literal-regexp
+		conf.only.push(new RegExp(`^${process.env.AXWAY_COVERAGE.replace(/[/\\]/g, '[/\\\\]')}[/\\\\](packages|plugins)[/\\\\].+[/\\\\](src|test)[/\\\\]`));
 	}
 } else {
 	conf.only = [ 'src', 'test' ];
@@ -63,7 +63,7 @@ require('@babel/register')(conf);
  */
 if (process.env.AXWAY_COVERAGE) {
 	const cwd = process.cwd();
-	const distRegExp = /[\//]dist([\//]|$)/;
+	const distRegExp = /[/\\]dist([/\\]|$)/;
 	const distGRegExp = /([/\\])dist([/\\]|$)/g;
 
 	Module._resolveFilename = function (request, parent, isMain, options) {
