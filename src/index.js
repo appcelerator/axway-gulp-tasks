@@ -18,7 +18,7 @@ module.exports = opts => {
 	let parent = module.parent;
 	if (!opts.projectDir) {
 		while (parent) {
-			if (/[\/\\]gulpfile(\.tmp\.\d+)?\.js$/.test(parent.filename)) {
+			if (/[/\\]gulpfile(\.tmp\.\d+)?\.js$/.test(parent.filename)) {
 				opts.projectDir = path.dirname(parent.filename);
 				break;
 			}
@@ -41,10 +41,11 @@ module.exports = opts => {
 		if (opts.template === 'index' || !fs.statSync(file).isFile()) {
 			throw new Error();
 		}
-	} catch (e) {
+	} catch (_e) {
 		log(ansiColors.red(opts.template ? `Unknown template: ${opts.template}` : 'Invalid template'));
 		process.exit(1);
 	}
 
+	// eslint-disable-next-line security/detect-non-literal-require
 	require(file)(opts);
 };

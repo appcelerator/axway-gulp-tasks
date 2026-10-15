@@ -6,6 +6,9 @@
     "access": "public"
   },
   "main": "./src/index",
+  "scripts": {
+    "lint": "eslint ."
+  },
   "author": "Axway, Inc. <npmjs@appcelerator.com>",
   "maintainers": [
     "Chris Barber <cbarber@axway.com>"

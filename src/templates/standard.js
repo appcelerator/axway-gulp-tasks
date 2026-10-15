@@ -38,9 +38,15 @@ module.exports = (opts) => {
 	/*
 	 * Clean tasks
 	 */
-	async function cleanCoverage() { return fs.remove(coverageDir); }
-	async function cleanDist() { return fs.remove(distDir); }
-	async function cleanDocs() { return fs.remove(docsDir); }
+	async function cleanCoverage() {
+		return fs.remove(coverageDir);
+	}
+	async function cleanDist() {
+		return fs.remove(distDir);
+	}
+	async function cleanDocs() {
+		return fs.remove(docsDir);
+	}
 	exports.clean = parallel(cleanCoverage, cleanDist, cleanDocs);
 
 	// get the list of node_modules to search for lint related dependencies
@@ -68,11 +74,13 @@ module.exports = (opts) => {
 			patchedNodeModulePaths = true;
 		}
 
+		// eslint-disable-next-line security/detect-non-literal-require
 		const overrideConfig = [ ...require(path.resolve(__dirname, '..', eslintFile)) ];
 
 		// check if the user has a custom eslint.config.js in the root of the project
 		const custom = path.join(opts.projectDir, 'eslint.config.js');
 		if (fs.existsSync(custom)) {
+			// eslint-disable-next-line security/detect-non-literal-require
 			const customConfig = require(custom);
 			overrideConfig.push(...(Array.isArray(customConfig) ? customConfig : [ customConfig ]));
 		}
@@ -84,13 +92,19 @@ module.exports = (opts) => {
 			.pipe(gulpESLint.format())
 			.pipe(gulpESLint.failAfterError());
 	}
-	function lintSrc() { return lint('src/**/*.js'); }
-	function lintTest() { return lint('test/**/test-*.js', 'eslint-tests.config.js'); }
+	function lintSrc() {
+		return lint('src/**/*.js');
+	}
+	function lintTest() {
+		return lint('test/**/test-*.js', 'eslint-tests.config.js');
+	}
 	exports['lint-src'] = lintSrc;
 	exports['lint-test'] = lintTest;
 	exports.lint = series(
 		async function lintSrcWrapper() { return lintSrc(); },
-		async function lintTestWrapper() { return lintTest(); }
+		async function lintTestWrapper() {
+			return lintTest();
+		}
 	);
 
 	/*
@@ -132,10 +146,18 @@ module.exports = (opts) => {
 	/*
 	 * test tasks
 	 */
-	exports.test             = series(lintTest, build,                function test() {     return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir }); });
-	exports['test-only']     = series(lintTest,                       function test() {     return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir }); });
-	exports.coverage         = series(cleanCoverage, lintTest, build, function coverage() { return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true }); });
-	exports['coverage-only'] = series(cleanCoverage, lintTest,        function coverage() { return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true }); });
+	exports.test             = series(lintTest, build, function test() {
+		return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir });
+	});
+	exports['test-only']     = series(lintTest, function test() {
+		return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir });
+	});
+	exports.coverage         = series(cleanCoverage, lintTest, build, function coverage() {
+		return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true });
+	});
+	exports['coverage-only'] = series(cleanCoverage, lintTest, function coverage() {
+		return runTests({ root: axwayGulpTasksNodeModulesPath, projectDir, cover: true });
+	});
 
 	/*
 	 * watch tasks
