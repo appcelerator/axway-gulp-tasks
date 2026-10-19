@@ -16,10 +16,10 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 	if (cover) {
 		const c8ModuleBinDir = resolveModuleBin(root, 'c8');
 		if (isWindows) {
-            execPath = path.join(c8ModuleBinDir, 'c8.cmd');
-        } else {
-            args.push(path.join(c8ModuleBinDir, 'c8'));
-        }
+			execPath = path.join(c8ModuleBinDir, 'c8.cmd');
+		} else {
+			args.push(path.join(c8ModuleBinDir, 'c8'));
+		}
 
 		args.push(
 			'--exclude', 'test',
@@ -58,13 +58,10 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 		args.push('--slow', slow);
 	}
 
-	const jenkinsReporter = resolveModule(root, 'mocha-jenkins-reporter');
-	if (jenkinsReporter) {
-		args.push(`--reporter=${jenkinsReporter}`);
-	}
-
-	process.env.JUNIT_REPORT_PATH = path.join(projectDir, 'junit.xml');
-	process.env.JUNIT_REPORT_NAME = path.basename(projectDir);
+	// run mocha's built-in `spec` and `xunit` reporters together for live console output plus a
+	// JUnit-style XML file; both ship with mocha itself
+	args.push('--reporter', path.join(__dirname, 'mocha-multi-reporter.js'));
+	args.push('--reporter-options', `output=${path.join(projectDir, 'junit.xml')},suiteName=${path.basename(projectDir)}`);
 
 	// add grep
 	let p = process.argv.indexOf('--grep');
@@ -100,7 +97,7 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 
 	// run!
 	try {
-		const result = execSync(cmd, { stdio: 'inherit'});
+		const result = execSync(cmd, { stdio: 'inherit' });
 		if (result) {
 			const err = new Error('At least one test failed :(');
 			err.showStack = false;
@@ -114,10 +111,11 @@ exports.runTests = async function runTests({ all, cover, projectDir, root, slow,
 
 		const after = path.join(projectDir, 'test', 'after.js');
 		if (fs.existsSync(after)) {
+			// eslint-disable-next-line security/detect-non-literal-require
 			require(after);
 		}
 	}
-}
+};
 
 function resolveModuleBin(root, name) {
 	return path.resolve(resolveModule(root, name), '..', '.bin');
@@ -131,7 +129,7 @@ function resolveModule(root, name) {
 
 	try {
 		return path.dirname(require.resolve(name));
-	} catch (e) {
+	} catch (_e) {
 		return null;
 	}
 };
