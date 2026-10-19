@@ -1,3 +1,14 @@
+# v6.0.0 (Oct 19, 2026)
+
+- BREAKING CHANGE: Requires Node.js 20.19.0, 22.13.0, or 24 or newer.
+- BREAKING CHANGE: Replaced `esdoc` with `jsdoc` for generating documentation.
+- BREAKING CHANGE: Upgraded `gulp` to v5, `eslint` to v10, `eslint-config-axway` to v11, `mocha` to v12, and `sinon` to v18.
+- BREAKING CHANGE: Replaced `gulp-eslint` with `gulp-eslint-new` and the ESLint flat config format.
+- BREAKING CHANGE: Dropped `mocha-jenkins-reporter` in favor of mocha's built-in xunit reporter.
+- feat: Added a spec runner to output the tests that were run.
+- chore: Updated `@babel/*`, `c8` to v12, and other dependencies for security fixes.
+- chore: Fixed all lint errors and warnings and added a `lint` script.
+
 # v5.0.1 (May 1, 2025)
 
 - fix: fixed package.json
