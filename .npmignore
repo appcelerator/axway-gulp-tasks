@@ -9,3 +9,4 @@ npm-debug.log
 retire_output.json
 yarn-error.log
 yarn.lock
+eslint.config.mjs
